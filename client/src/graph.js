@@ -8,11 +8,7 @@ class Graph extends Component {
         /* Calls the Component constructor */
         super(props);
 
-        /* Sets values to a list of [timestamp, score] and sorts by earliest date (Used for averages) */
-        this.state = {
-            curr_pos : 0,
-            values : (props.data.map((scores) => {return [scores.timestamp, scores.score]})),
-        };
+        this.state = { curr_pos:0 };
     }
 
     /* For averages graph, creates hashmap with data and averages score per day */
@@ -21,19 +17,19 @@ class Graph extends Component {
 
         let dateSum = new Map();
         let dateCount = new Map();
-        for (var i = 0; i < values.length; i++){
-            var date = new Date((values[i][0]).replace('T', ' '));
+        for (let i = 0; i < values.length; i++){
+            let date = new Date((values[i][0]).replace('T', ' '));
             // Correct timezone of date
             date = new Date(date.getTime() + Math.abs(date.getTimezoneOffset()*60000))
-            var dateStr = (date.getMonth()+1) + '-' + date.getDate() + '-' + date.getFullYear();
+            let dateStr = (date.getMonth()+1) + '-' + date.getDate() + '-' + date.getFullYear();
 
             if(!dateSum.has(dateStr)){
                 dateSum.set(dateStr, values[i][1]);
                 dateCount.set(dateStr, 1);
             }
             else {
-                var sum = dateSum.get(dateStr) + values[i][1];
-                var count = dateCount.get(dateStr) + 1;
+                let sum = dateSum.get(dateStr) + values[i][1];
+                let count = dateCount.get(dateStr) + 1;
                 dateSum.set(dateStr, sum);
                 dateCount.set(dateStr, count)
             }
@@ -50,7 +46,7 @@ class Graph extends Component {
     setHistories(values){
         let histBucket = new Map();
 
-        for (var i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++){
             histBucket.set("Tweet " + (i).toString(), values[i][1]);
         }
 
@@ -62,7 +58,7 @@ class Graph extends Component {
         const posData = [];
         const negData = [];
         const chartData = [];
-        for (var i = 0; i < values.length; i++){
+        for (let i = 0; i < values.length; i++){
             if (values[i][1] > 0){
                 posData.push(values[i]);
             }
@@ -77,7 +73,7 @@ class Graph extends Component {
         let posSentiments = this.createGraphData(posHash);
         let negSentiments = this.createGraphData(negHash);
 
-        for (var i = 0; i < posSentiments.length; i++){
+        for (let i = 0; i < posSentiments.length; i++){
             chartData.push([i, posSentiments[i][1], negSentiments[i][1]]);
         }
 
@@ -97,13 +93,13 @@ class Graph extends Component {
     /* Draws the average chart */
     drawAvgsChart(values){
         const chartHeader = [["Date", "Sentiment Value"]];
-        var data = chartHeader.concat(this.createGraphData(this.setAverages(values)));
+        let data = chartHeader.concat(this.createGraphData(this.setAverages(values)));
         if(values.length === 0){
             data = chartHeader.concat([[0, NaN]]);
             alert("No tweets with this query");
         }
 
-        var options = {
+        let options = {
            height: window.innerHeight * 0.7,
            width: window.innerWidth * 0.7,
            hAxis: {
@@ -128,13 +124,13 @@ class Graph extends Component {
     /* Draws the histogram chart */
     drawHistogramChart(values){
         const chartHeader = [['Tweets', 'Sentiment Value']];
-        var data = chartHeader.concat(this.createGraphData(this.setHistories(values)));
+        let data = chartHeader.concat(this.createGraphData(this.setHistories(values)));
         if (values.length === 0){
             data = chartHeader.concat([[0, NaN]]);
             alert("No tweets with this query");
         }
 
-        var options = {
+        let options = {
            height: window.innerHeight * 0.7,
            width: window.innerWidth * 0.7,
            hAxis: {
@@ -159,13 +155,13 @@ class Graph extends Component {
     /* Draws the positive negative chart */
     drawPosNegChart(values){
         const chartHeader = [["Date", "Positive Sentiment Value", "Negative Sentiment Value"]];
-        var data = chartHeader.concat(this.setPosNeg(values));
+        let data = chartHeader.concat(this.setPosNeg(values));
         if(values.length === 0){
             data = chartHeader.concat([[0, NaN, NaN]]);
             alert("No tweets with this query");
         }
 
-        var options = {
+        let options = {
            height: window.innerHeight * 0.7,
            width: window.innerWidth * 0.7,
            hAxis: {
@@ -221,9 +217,10 @@ class Graph extends Component {
 
     /* The chartData creates the data for the graph */
     render() {
+        const values = this.props.values.map((s) => [s.timestamp, s.score])
         return (
                 <div className = "chartcontainer">
-                    {this.handleGraph(this.state.values)}
+                    {this.handleGraph(values)}
                     <button className = "graphButton" type = "submit" onClick={(e) => this.handleClick(this.state.curr_pos)}/>
                 </div>
         );
