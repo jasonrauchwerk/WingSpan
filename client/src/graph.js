@@ -217,7 +217,12 @@ class Graph extends Component {
 
     /* The chartData creates the data for the graph */
     render() {
-        const values = this.props.values.map((s) => [s.timestamp, s.score])
+        let values;
+        if (this.props.data) {
+            values = this.props.data.map((s) => [s.timestamp, s.score]);
+        } else {
+            values = [];
+        }
         return (
                 <div className = "chartcontainer">
                     {this.handleGraph(values)}
