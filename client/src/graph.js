@@ -8,7 +8,8 @@ class Graph extends Component {
         /* Calls the Component constructor */
         super(props);
 
-        this.state = { curr_pos:0 };
+        this.state = { display: 0 };
+        this.switchView = this.switchView.bind(this);
     }
 
     /* For averages graph, creates hashmap with data and averages score per day */
@@ -184,26 +185,12 @@ class Graph extends Component {
     }
 
     /* Handles the on click position */
-    handleClick(position){
-        if(position === 0){
-            this.setState({
-                curr_pos: 1
-            });
-        }
-        else if(position === 1){
-            this.setState({
-               curr_pos: 2
-            });
-        }
-        else if(position === 2){
-            this.setState({
-                curr_pos: 0
-            });
-        }
+    switchView() {
+        this.setState({ display: (this.state.display + 1) % 3 });
     }
 
     /* Calls the proper graph based on the current position */
-    handleGraph(values){
+    displayGraph(values) {
         if (this.state.curr_pos === 0){
             return this.drawAvgsChart(values);
         }
@@ -224,10 +211,10 @@ class Graph extends Component {
             values = [];
         }
         return (
-                <div className = "chartcontainer">
-                    {this.handleGraph(values)}
-                    <button className = "graphButton" type = "submit" onClick={(e) => this.handleClick(this.state.curr_pos)}/>
-                </div>
+            <div className="chartcontainer">
+                {this.displayGraph(values)}
+                <button className="graphButton" type="submit" onClick={this.switchView}/>
+            </div>
         );
     }
 }
