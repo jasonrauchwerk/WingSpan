@@ -191,14 +191,15 @@ class Graph extends Component {
 
     /* Calls the proper graph based on the current position */
     displayGraph(values) {
-        if (this.state.curr_pos === 0){
-            return this.drawAvgsChart(values);
-        }
-        else if (this.state.curr_pos === 1){
-            return this.drawHistogramChart(values);
-        }
-        else if (this.state.curr_pos === 2){
-            return this.drawPosNegChart(values);
+        switch (this.state.display) {
+            case 0:
+                return this.drawAvgsChart(values);
+            case 1:
+                return this.drawHistogramChart(values);
+            case 2:
+                return this.drawPosNegChart(values);
+            default:
+                return null;
         }
     }
 
