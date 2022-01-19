@@ -76,7 +76,7 @@ class Graph extends Component {
             chartData.push([i, posSentiments[i][1], negSentiments[i][1]]);
         }
 
-        return chartData.sort(function(a, b){return a[0] - b[0]});
+        return chartData.sort(function(o){return o[0]});
     }
 
     /* Utility function that converts Hashmap of data into graph data */
