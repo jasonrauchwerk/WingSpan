@@ -7,9 +7,7 @@ class Graph extends Component {
     constructor(props){
         /* Calls the Component constructor */
         super(props);
-
         this.state = { display: 0 };
-        this.switchView = this.switchView.bind(this);
     }
 
     /* For averages graph, creates hashmap with data and averages score per day */
@@ -88,7 +86,7 @@ class Graph extends Component {
             chartData.push([key, value]);
         }
 
-        return chartData.sort(function(a, b){return a[0] - b[0]});
+        return chartData.sort(function(o){return o[0]});
     }
 
     /* Draws the average chart */
