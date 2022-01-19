@@ -184,11 +184,6 @@ class Graph extends Component {
                     /></div>);
     }
 
-    /* Handles the on click position */
-    switchView() {
-        this.setState({ display: (this.state.display + 1) % 3 });
-    }
-
     /* Calls the proper graph based on the current position */
     displayGraph(values) {
         switch (this.state.display) {
@@ -213,8 +208,8 @@ class Graph extends Component {
         }
         return (
             <div className="chartcontainer">
-                {this.displayGraph(values)}
-                <button className="graphButton" type="submit" onClick={this.switchView}/>
+                { this.displayGraph(values) }
+                    <button className="graphButton" type="submit" onClick={() => this.setState({ display: (this.state.display + 1) % 3 })}/>
             </div>
         );
     }
